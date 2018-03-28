@@ -67,7 +67,7 @@ $SegmentPoolEnd = “19999"
 $TransportZoneName = “Local-Transport-ZoneA”
 
 #vSphereDetails
-$VcenterServer = "vc-l-01a.corp.local"
+$VcenterServer = "vcsa-01a.corp.local"
 $vCenterUserName = "administrator@vsphere.local"
 $vCenterPassword = "VMware1!"
 $MgmtClusterName = “Management and Edge Cluster A1”
