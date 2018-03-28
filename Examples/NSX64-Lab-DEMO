@@ -80,7 +80,7 @@ $EdgeDatastoreName = $ManagementDatastoreName
 $ComputeDatastoreName = “ds-site-a-nfs02”
 
 #Network Details
-$ManagementNetworkPortGroupName = “Mgmt”
+$ManagementNetworkPortGroupName = “Mgmt_Edge_VDS - Mgmt”
 $ManagementNetworkSubnetMask = "255.255.255.0"
 $ManagementNetworkSubnetPrefixLength = "24"
 $ManagementNetworkGateway = "192.168.110.1"
