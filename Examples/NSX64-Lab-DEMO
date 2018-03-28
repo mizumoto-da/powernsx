@@ -56,7 +56,7 @@ $NsxManagerOVF = "C:\Temp\VMware-NSX-Manager-6.2.2-3604087.ova"
 
 #NSX License key is MANDATORY for 6.2.3 and above deployments.
 $NsxlicenseKey = ""
-$NsxManagerName = "nsxmgr—l-01a"
+$NsxManagerName = "nsxmgr-l-01a"
 $NsxManagerPassword = "VMware1!"
 $NsxManagerIpAddress = "192.168.110.42”
 $ControllerPoolStartIp = "192.168.110.201”
