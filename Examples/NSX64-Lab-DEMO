@@ -427,6 +427,9 @@ if ( $buildnsx ) {
 
     write-host -foregroundcolor Green "Deploying NSX Controllers..."
 
+### controller cluster DRS on
+    Get-Cluster -Name $MgmtCluster | Set-Cluster -DrsEnabled:$true
+
     try {
 
         write-host "   -> Creating IP Pool for Controller addressing"
