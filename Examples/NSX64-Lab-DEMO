@@ -12,7 +12,7 @@
 #       - Run NsxBuildFromScratch.ps1 -deploy3ta:$false
 #  2 - To deploy the standard 3 tier app to an existing NSX deployment.
 #       - Run NsxBuildFromScratch.ps1 -buildnsx:$false
-#  3 - To deploy the whole shebang
+#  3 - To deploy the whole shebang EdgeName
 #       - Run NsxBuildFromScratch.ps1
 #
 # Note:  If you are using NSX 6.2.3 or above, you will need to configure the license key
@@ -56,64 +56,64 @@ $NsxManagerOVF = "C:\Temp\VMware-NSX-Manager-6.2.2-3604087.ova"
 
 #NSX License key is MANDATORY for 6.2.3 and above deployments.
 $NsxlicenseKey = ""
-$NsxManagerName = "nsx-m-01a"
+$NsxManagerName = "nsxmgr—l-01a"
 $NsxManagerPassword = "VMware1!"
-$NsxManagerIpAddress = "192.168.100.201"
-$ControllerPoolStartIp = "192.168.100.202"
-$ControllerPoolEndIp = "192.168.100.204"
+$NsxManagerIpAddress = "192.168.110.42”
+$ControllerPoolStartIp = "192.168.110.201”
+$ControllerPoolEndIp = "192.168.110.210”
 $ControllerPassword = "VMware1!VMware1!"
-$SegmentPoolStart = "5000"
-$SegmentPoolEnd = "5999"
-$TransportZoneName = "TransportZone1"
+$SegmentPoolStart = “10000"
+$SegmentPoolEnd = “19999"
+$TransportZoneName = “Local-Transport-ZoneA”
 
 #vSphereDetails
-$VcenterServer = "vc-01a.corp.local"
+$VcenterServer = "vc-l-01a.corp.local"
 $vCenterUserName = "administrator@vsphere.local"
 $vCenterPassword = "VMware1!"
-$MgmtClusterName = "Mgmt01"
-$ManagementDatastoreName = "MgmtData"
-$MgmtVdsName = "DSwitch"
-$ComputeClusterName = "Mgmt01"
-$ComputeVdsName = "DSwitch"
+$MgmtClusterName = “Management and Edge Cluster A1”
+$ManagementDatastoreName = “ds-site-a-nfs01”
+$MgmtVdsName = “Mgmt_Edge_VDS”
+$ComputeClusterName = “Compute Cluster A1”
+$ComputeVdsName = “ComputeA_VDS”
 $EdgeClusterName = $MgmtClusterName
 $EdgeDatastoreName = $ManagementDatastoreName
-$ComputeDatastoreName = "MgmtData"
+$ComputeDatastoreName = “ds-site-a-nfs02”
 
 #Network Details
-$ManagementNetworkPortGroupName = "Internal"
+$ManagementNetworkPortGroupName = “Mgmt”
 $ManagementNetworkSubnetMask = "255.255.255.0"
 $ManagementNetworkSubnetPrefixLength = "24"
-$ManagementNetworkGateway = "192.168.100.1"
+$ManagementNetworkGateway = "192.168.110.1"
 
 $VxlanMtuSize = 1600
 
 $MgmtVdsVxlanNetworkSubnetMask = "255.255.255.0"
 $MgmtVdsVxlanNetworkSubnetPrefixLength = "24"
-$MgmtVdsVxlanNetworkGateway = "172.16.110.1"
+$MgmtVdsVxlanNetworkGateway = "192.168.135.2”
 $MgmtVdsVxlanNetworkVlanId = "0"
 $MgmtVdsVxlanVlanID = "0"
 $MgmtVdsHostVtepCount = 1
-$MgmtVdsVtepPoolStartIp = "172.16.110.201"
-$MgmtVdsVtepPoolEndIp = "172.16.110.204"
+$MgmtVdsVtepPoolStartIp = "192.168.135.51"
+$MgmtVdsVtepPoolEndIp = "192.168.135.60”
 
 
 $ComputeVdsVxlanNetworkSubnetMask = "255.255.255.0"
 $ComputeVdsVxlanNetworkSubnetPrefixLength = "24"
-$ComputeVdsVxlanNetworkGateway = "172.16.111.1"
+$ComputeVdsVxlanNetworkGateway = "192.168.125.1”
 $ComputeVdsVxlanNetworkVlanId = "0"
 $ComputeVdsVxlanVlanID = "0"
 $ComputeVdsHostVtepCount = 1
-$ComputeVdsVtepPoolStartIp = "172.16.111.201"
-$ComputeVdsVtepPoolEndIp = "172.16.111.204"
+$ComputeVdsVtepPoolStartIp = "192.168.125.51"
+$ComputeVdsVtepPoolEndIp = "192.168.125.60”
 
 
 #Misc
-$SyslogServer = "192.168.100.254"
+$SyslogServer = "192.168.110.79”
 $SysLogPort = 514
 $SysLogProtocol = "TCP"
-$NtpServer = "192.168.100.10"
-$DnsServer1 = "192.168.100.10"
-$DnsServer2 = "192.168.100.10"
+$NtpServer = "192.168.110.10"
+$DnsServer1 = "192.168.110.10"
+$DnsServer2 = "192.168.110.10"
 $DnsSuffix = "corp.local"
 
 #Reduce NSX Manager Memory - in GB.  Comment variable out for default.
@@ -123,11 +123,11 @@ $NsxManagerMem = 12
 #############################################
 # Logical Topology environment
 
-$EdgeUplinkPrimaryAddress = "192.168.100.192"
-$EdgeUplinkSecondaryAddress = "192.168.100.193"
-$EdgeDefaultGW = "192.168.100.1"
-$EdgeUplinkNetworkName = "Internal"
-$AppliancePassword = "VMware1!VMware1!"
+$EdgeUplinkPrimaryAddress = "192.168.100.3”
+$EdgeUplinkSecondaryAddress = "192.168.100.5”
+$EdgeDefaultGW = "192.168.100.2”
+$EdgeUplinkNetworkName = “HQ Uplink A”
+$AppliancePassword = "VMware1!VMware!"
 $3TiervAppLocation = "C:\Temp\3_Tier-App-v1.6.ova"
 #Get v1.6 of the vApp from http://goo.gl/ujxYz1
 
@@ -137,22 +137,30 @@ $3TiervAppLocation = "C:\Temp\3_Tier-App-v1.6.ova"
 # Topology Details.  No need to modify below here
 
 #Names
-$TransitLsName = "Transit"
-$WebLsName = "Web"
-$AppLsName = "App"
-$DbLsName = "Db"
+$TransitLsName = "Transit-Network-01"
+$WebLsName = "Web-Tier-01-A"
+$AppLsName = "App-Tier-01-A"
+$DbLsName = "DB-Tier-01-A"
 $MgmtLsName = "Mgmt"
-$EdgeName = "Edge01"
-$LdrName = "Dlr01"
+$EdgeName = "Edge-Gateway-01"
+$LdrName = "Distributed-Router-01"
+
+#OneArmLB
+$LbEdgeName = “OneArm-LB-01"
+$LbEdgeUplinkPrimaryAddress = "172.16.110.10”
+$LbEdgeUplinkSecondaryAddress = "172.16.110.9”
+$LbEdgeDefaultGW = "172.16.110.1”
+$LbEdgeUplinkNetworkName = “Web-Tier-01”
+
 
 #Topology
 $EdgeInternalPrimaryAddress = "172.16.1.1"
 $EdgeInternalSecondaryAddress = "172.16.1.6"
-$LdrUplinkPrimaryAddress = "172.16.1.2"
-$LdrUplinkProtocolAddress = "172.16.1.3"
-$LdrWebPrimaryAddress = "10.0.1.1"
-$LdrAppPrimaryAddress = "10.0.2.1"
-$LdrDbPrimaryAddress = "10.0.3.1"
+$LdrUplinkPrimaryAddress = "192.168.10.5”
+$LdrUplinkProtocolAddress = "192.168.10.6”
+$LdrWebPrimaryAddress = "172.16.110.1"
+$LdrAppPrimaryAddress = "172.16.120.1"
+$LdrDbPrimaryAddress = "172.16.130.1"
 $TransitOspfAreaId = "10"
 $DefaultSubnetMask = "255.255.255.0"
 $DefaultSubnetBits = "24"
@@ -162,26 +170,26 @@ $vAppName = "Books"
 
 #WebTier VMs
 $Web01Name = "Web01"
-$Web01Ip = "10.0.1.11"
+$Web01Ip = "172.16.110.11"
 $Web02Name = "Web02"
-$Web02Ip = "10.0.1.12"
+$Web02Ip = "172.16.110.12"
 
 #AppTier VMs
 $App01Name = "App01"
-$App01Ip = "10.0.2.11"
+$App01Ip = "172.16.120.11"
 $App02Name = "App02"
-$App02Ip = "10.0.2.12"
+$App02Ip = "172.16.120.12"
 $Db01Name = "Db01"
-$Db01Ip = "10.0.3.11"
+$Db01Ip = "172.16.130.11"
 
 #DB Tier VMs
 $Db02Name = "Db02"
-$Db02Ip = "10.0.3.12"
+$Db02Ip = "172.16.130.12"
 
 ##LoadBalancer
 $LbAlgo = "round-robin"
-$WebpoolName = "WebPool1"
-$ApppoolName = "AppPool1"
+$WebpoolName = "WebServer”
+$ApppoolName = "App"
 $WebVipName = "WebVIP"
 $AppVipName = "AppVIP"
 $WebAppProfileName = "WebAppProfile"
@@ -191,23 +199,23 @@ $HttpPort = "80"
 $LBMonitorName = "default_http_monitor"
 
 ## Security Groups
-$WebSgName = "SG-Web"
+$WebSgName = “Web Servers A”
 $WebSgDescription = "Web Security Group"
-$AppSgName = "SG-App"
+$AppSgName = “App Servers A“
 $AppSgDescription = "App Security Group"
-$DbSgName = "SG-Db"
+$DbSgName = “DB Servers A“
 $DbSgDescription = "DB Security Group"
 $vAppSgName = "SG-Bookstore"
 $vAppSgDescription = "Books ALL Security Group"
 ## Security Tags
-$WebStName = "ST-Web"
-$AppStName = "ST-App"
-$DbStName = "ST-DB"
+$WebStName = “SG-TAG-Web Servers A”
+$AppStName = “App Servers USG”
+$DbStName = “DB Servers USG”
 ##IPset
 $AppVIP_IpSet_Name = "AppVIP_IpSet"
 $InternalESG_IpSet_Name = "InternalESG_IpSet"
 ##DFW
-$FirewallSectionName = "Bookstore Application"
+$FirewallSectionName = “WebApp - Site A”
 
 ###############################################
 # Do Not modify below here.
@@ -349,8 +357,9 @@ if ( $buildnsx ) {
     #
     ###############################
     # Deploy NSX Manager appliance.
+      write-Host -foregroundcolor Green “NOT Deploying NSX Manager..."
 
-    write-Host -foregroundcolor Green "Deploying NSX Manager..."
+<#    write-Host -foregroundcolor Green "Deploying NSX Manager..."
     try {
         New-NsxManager -NsxManagerOVF $NsxManagerOVF -Name $NsxManagerName -ClusterName $MgmtClusterName -ManagementPortGroupName $ManagementNetworkPortGroupName -DatastoreName $ManagementDatastoreName -CliPassword $NsxManagerPassword -CliEnablePassword $NsxManagerPassword -Hostname $NsxManagerName -IpAddress $NsxManagerIpAddress -Netmask $ManagementNetworkSubnetMask -Gateway $ManagementNetworkGateway -DnsServer $DnsServer1 -DnsDomain $DnsSuffix -NtpServer $NtpServer -EnableSsh -StartVM -Wait -FolderName vm -ManagerMemoryGB $NsxManagerMem | out-null
 
@@ -362,7 +371,6 @@ if ( $buildnsx ) {
         Throw "An error occured during NSX Manager deployment.  $_"
     }
     write-host -foregroundcolor Green "Complete`n"
-
 
 
     ###############################
@@ -409,6 +417,7 @@ if ( $buildnsx ) {
         }
     }
     write-host -foregroundcolor Green "Complete`n"
+#>
 
 
     ###############################
@@ -592,11 +601,18 @@ if ( $deploy3ta ) {
     # Load LoadBalancer
 
     # Enable Loadbalancing on $edgeName
-    write-host -foregroundcolor "Green" "Enabling LoadBalancing on $EdgeName"
-    Get-NsxEdge $EdgeName | Get-NsxLoadBalancer | Set-NsxLoadBalancer -Enabled | out-null
+
+    $lbedgevnic0 = New-NsxEdgeinterfacespec -index 0 -Name “App Network” -type Uplink -ConnectedTo $LbEdgeUplinkNetwork -PrimaryAddress $LbEdgeUplinkPrimaryAddress -SubnetPrefixLength $DefaultSubnetBits
+    $Edge2 = New-NsxEdge -name $LbEdgeName -cluster $EdgeCluster -datastore $EdgeDataStore -Interface $lbedgevnic0 -Password $AppliancePassword -FwDefaultPolicyAllow
+
+    ##Configure Edge DGW
+    Get-NSXEdge $LbEdgeName | Get-NsxEdgeRouting | Set-NsxEdgeRouting -DefaultGatewayAddress $LbEdgeDefaultGW -confirm:$false | out-null
+
+    write-host -foregroundcolor "Green" "Enabling LoadBalancing on $LbEdgeName"
+    Get-NsxEdge $LbEdgeName | Get-NsxLoadBalancer | Set-NsxLoadBalancer -Enabled | out-null
 
     #Get default monitor.
-    $monitor =  get-nsxedge $EdgeName | Get-NsxLoadBalancer | Get-NsxLoadBalancerMonitor -Name $LBMonitorName
+    $monitor =  get-nsxedge $LbEdgeName | Get-NsxLoadBalancer | Get-NsxLoadBalancerMonitor -Name $LBMonitorName
 
 
     # Define pool members.  By way of example we will use two different methods for defining pool membership.  Webpool via predefine memberspec first...
@@ -605,25 +621,25 @@ if ( $deploy3ta ) {
     $webpoolmember2 = New-NsxLoadBalancerMemberSpec -name $Web02Name -IpAddress $Web02Ip -Port $HttpPort
 
     # ... And create the web pool
-    $WebPool =  Get-NsxEdge $EdgeName | Get-NsxLoadBalancer | New-NsxLoadBalancerPool -name $WebPoolName -Description "Web Tier Pool" -Transparent:$false -Algorithm $LbAlgo -Memberspec $webpoolmember1, $webpoolmember2 -Monitor $Monitor
+    $WebPool =  Get-NsxEdge $LbEdgeName | Get-NsxLoadBalancer | New-NsxLoadBalancerPool -name $WebPoolName -Description "Web Tier Pool" -Transparent:$false -Algorithm $LbAlgo -Memberspec $webpoolmember1, $webpoolmember2 -Monitor $Monitor
 
     # Now method two for the App Pool  Create the pool with empty membership.
     write-host -foregroundcolor "Green" "Creating App Pool"
-    $AppPool = Get-NsxEdge $EdgeName | Get-NsxLoadBalancer | New-NsxLoadBalancerPool -name $AppPoolName -Description "App Tier Pool" -Transparent:$false -Algorithm $LbAlgo -Monitor $Monitor
+    $AppPool = Get-NsxEdge $LbEdgeName | Get-NsxLoadBalancer | New-NsxLoadBalancerPool -name $AppPoolName -Description "App Tier Pool" -Transparent:$false -Algorithm $LbAlgo -Monitor $Monitor
 
     # ... And now add the pool members
     $AppPool = $AppPool | Add-NsxLoadBalancerPoolMember -name $App01Name -IpAddress $App01Ip -Port $HttpPort
     $AppPool = $AppPool | Add-NsxLoadBalancerPoolMember -name $App02Name -IpAddress $App02Ip -Port $HttpPort
 
     # Create App Profiles. It is possible to use the same but for ease of operations this will be two here.
-    write-host -foregroundcolor "Green" "Creating Application Profiles for Web and App"
-    $WebAppProfile = Get-NsxEdge $EdgeName | Get-NsxLoadBalancer | New-NsxLoadBalancerApplicationProfile -Name $WebAppProfileName  -Type $VipProtocol
-    $AppAppProfile = Get-NsxEdge $EdgeName | Get-NsxLoadBalancer | new-NsxLoadBalancerApplicationProfile -Name $AppAppProfileName  -Type $VipProtocol
+    write-host -foreground color "Green" "Creating Application Profiles for Web and App"
+    $WebAppProfile = Get-NsxEdge $LbEdgeName | Get-NsxLoadBalancer | New-NsxLoadBalancerApplicationProfile -Name $WebAppProfileName  -Type $VipProtocol
+    $AppAppProfile = Get-NsxEdge $LbEdgeName | Get-NsxLoadBalancer | new-NsxLoadBalancerApplicationProfile -Name $AppAppProfileName  -Type $VipProtocol
 
-    # Create the VIPs for the relevent WebPools. Using the Secondary interfaces.
+    # Create the VIPs for the relevant WebPools. Using the Secondary interfaces.
     write-host -foregroundcolor "Green" "Creating VIPs"
-    Get-NsxEdge $EdgeName | Get-NsxLoadBalancer | Add-NsxLoadBalancerVip -name $WebVipName -Description $WebVipName -ipaddress $EdgeUplinkSecondaryAddress -Protocol $VipProtocol -Port $HttpPort -ApplicationProfile $WebAppProfile -DefaultPool $WebPool -AccelerationEnabled | out-null
-    Get-NsxEdge $EdgeName | Get-NsxLoadBalancer | Add-NsxLoadBalancerVip -name $AppVipName -Description $AppVipName -ipaddress $EdgeInternalSecondaryAddress -Protocol $VipProtocol -Port $HttpPort -ApplicationProfile $AppAppProfile -DefaultPool $AppPool -AccelerationEnabled | out-null
+    Get-NsxEdge $LbEdgeName | Get-NsxLoadBalancer | Add-NsxLoadBalancerVip -name $WebVipName -Description $WebVipName -ipaddress $EdgeUplinkSecondaryAddress -Protocol $VipProtocol -Port $HttpPort -ApplicationProfile $WebAppProfile -DefaultPool $WebPool -AccelerationEnabled | out-null
+    Get-NsxEdge $LbEdgeName | Get-NsxLoadBalancer | Add-NsxLoadBalancerVip -name $AppVipName -Description $AppVipName -ipaddress $EdgeInternalSecondaryAddress -Protocol $VipProtocol -Port $HttpPort -ApplicationProfile $AppAppProfile -DefaultPool $AppPool -AccelerationEnabled | out-null
 
 
     ####################################
@@ -657,7 +673,7 @@ if ( $deploy3ta ) {
     ####################################
     # OVF Application
 
-    write-host -foregroundcolor "Green" "Deploying 'The Bookstore' application "
+###    write-host -foregroundcolor "Green" "Deploying 'The Bookstore' application "
 
     # vCenter and the VDS have no understanding of a "Logical Switch". It only sees it as a VDS portgroup.
     # This step uses Get-NsxBackingPortGroup to determine the actual PG name that the VM attaches to.
@@ -669,7 +685,7 @@ if ( $deploy3ta ) {
     $WebNetwork = get-nsxtransportzone | get-nsxlogicalswitch $WebLsName | Get-NsxBackingPortGroup | Where { $_.VDSwitch -eq $CompVds }
     $AppNetwork = get-nsxtransportzone | get-nsxlogicalswitch $AppLsName | Get-NsxBackingPortGroup | Where { $_.VDSwitch -eq $CompVds }
     $DbNetwork = get-nsxtransportzone | get-nsxlogicalswitch $DbLsName | Get-NsxBackingPortGroup | Where { $_.VDSwitch -eq $CompVds }
-
+<#
     # Get OVF configuration so we can modify it.
     $OvfConfiguration = Get-OvfConfiguration -Ovf $3TiervAppLocation
 
@@ -704,7 +720,7 @@ if ( $deploy3ta ) {
         Write-Warning "Something is wrong with the vApp. Check if it has finished deploying. Press a key to continue";
         $Key = [console]::ReadKey($true)
     }
-
+#>
     #####################################
     # Microseg config
 
