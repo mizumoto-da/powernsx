@@ -56,7 +56,7 @@ $NsxManagerOVF = "C:\Temp\VMware-NSX-Manager-6.2.2-3604087.ova"
 
 #NSX License key is MANDATORY for 6.2.3 and above deployments.
 $NsxlicenseKey = ""
-$NsxManagerName = "nsxmgr-l-01a"
+$NsxManagerName = "nsxmgr—l-01a"
 $NsxManagerPassword = "VMware1!"
 $NsxManagerIpAddress = "192.168.110.42”
 $ControllerPoolStartIp = "192.168.110.201”
@@ -67,7 +67,7 @@ $SegmentPoolEnd = “19999"
 $TransportZoneName = “Local-Transport-ZoneA”
 
 #vSphereDetails
-$VcenterServer = "vcsa-01a.corp.local"
+$VcenterServer = "vc-l-01a.corp.local"
 $vCenterUserName = "administrator@vsphere.local"
 $vCenterPassword = "VMware1!"
 $MgmtClusterName = “Management and Edge Cluster A1”
@@ -80,7 +80,7 @@ $EdgeDatastoreName = $ManagementDatastoreName
 $ComputeDatastoreName = “ds-site-a-nfs02”
 
 #Network Details
-$ManagementNetworkPortGroupName = “Mgmt_Edge_VDS - Mgmt”
+$ManagementNetworkPortGroupName = $MgmtVdsName + ” - “ + “Mgmt”
 $ManagementNetworkSubnetMask = "255.255.255.0"
 $ManagementNetworkSubnetPrefixLength = "24"
 $ManagementNetworkGateway = "192.168.110.1"
@@ -126,7 +126,7 @@ $NsxManagerMem = 12
 $EdgeUplinkPrimaryAddress = "192.168.100.3”
 $EdgeUplinkSecondaryAddress = "192.168.100.5”
 $EdgeDefaultGW = "192.168.100.2”
-$EdgeUplinkNetworkName = “HQ Uplink A”
+$EdgeUplinkNetworkName =  $MgmtVdsName + ” - “ + “HQ Uplink A”
 $AppliancePassword = "VMware1!VMware!"
 $3TiervAppLocation = "C:\Temp\3_Tier-App-v1.6.ova"
 #Get v1.6 of the vApp from http://goo.gl/ujxYz1
@@ -145,6 +145,8 @@ $MgmtLsName = "Mgmt"
 $EdgeName = "Edge-Gateway-01"
 $LdrName = "Distributed-Router-01"
 
+
+$MgmtPortGroupName = “Mgmt_Edge_VDS - VM Mgmt”
 #OneArmLB
 $LbEdgeName = “OneArm-LB-01"
 $LbEdgeUplinkPrimaryAddress = "172.16.110.10”
@@ -554,7 +556,7 @@ if ( $deploy3ta ) {
     $WebLs = Get-NsxTransportZone | New-NsxLogicalSwitch $WebLsName
     $AppLs = Get-NsxTransportZone | New-NsxLogicalSwitch $AppLsName
     $DbLs = Get-NsxTransportZone | New-NsxLogicalSwitch $DbLsName
-    $MgmtLs = Get-NsxTransportZone | New-NsxLogicalSwitch $MgmtLsName
+###    $MgmtLs = Get-NsxTransportZone | New-NsxLogicalSwitch $MgmtLsName
 
 
     ######################################
@@ -565,7 +567,9 @@ if ( $deploy3ta ) {
     $LdrvNic0 = New-NsxLogicalRouterInterfaceSpec -type Uplink -Name $TransitLsName -ConnectedTo $TransitLs -PrimaryAddress $LdrUplinkPrimaryAddress -SubnetPrefixLength $DefaultSubnetBits
 
     # The DLR is created with the first vnic defined, and the datastore and cluster on which the Control VM will be deployed.
-    $Ldr = New-NsxLogicalRouter -name $LdrName -ManagementPortGroup $MgmtLs -interface $LdrvNic0 -cluster $EdgeCluster -datastore $EdgeDataStore
+###    $Ldr = New-NsxLogicalRouter -name $LdrName -ManagementPortGroup $MgmtLs -interface $LdrvNic0 -cluster $EdgeCluster -datastore $EdgeDataStore
+    $Ldr = New-NsxLogicalRouter -name $LdrName -ManagementPortGroup $MgmtPortGroupName -interface $LdrvNic0 -cluster $EdgeCluster -datastore $EdgeDataStore
+
 
     ## Adding DLR interfaces after the DLR has been deployed. This can be done any time if new interfaces are required.
     write-host -foregroundcolor Green "Adding Web LIF to DLR"
