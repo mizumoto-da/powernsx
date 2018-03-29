@@ -435,7 +435,7 @@ if ( $buildnsx ) {
         write-host "   -> Creating IP Pool for Controller addressing"
 
         $ControllerPool = New-NsxIpPool -Name "Controller Pool" -Gateway $ManagementNetworkGateway -SubnetPrefixLength $ManagementNetworkSubnetPrefixLength -DnsServer1 $DnsServer1 -DnsServer2 $DnsServer2 -DnsSuffix $DnsSuffix -StartAddress $ControllerPoolStartIp -EndAddress $ControllerPoolEndIp
-
+<#
         for ( $i=0; $i -le 2; $i++ ) {
 
             write-host "   -> Deploying NSX Controller $($i+1)"
@@ -455,7 +455,7 @@ if ( $buildnsx ) {
     }
 
     write-host -foregroundcolor Green "Complete`n"
-
+#>
 
     ##############################
     # Prep VDS
@@ -464,8 +464,8 @@ if ( $buildnsx ) {
 
     try {
         #This is assuming two or more NICs on the uplink PG on this VDS.  No LAG required, and results in load balance accross multiple uplink NICs
-        New-NsxVdsContext -VirtualDistributedSwitch $MgmtVds -Teaming "LOADBALANCE_SRCID" -Mtu $VxlanMtuSize | out-null
-        New-NsxVdsContext -VirtualDistributedSwitch $CompVds -Teaming "LOADBALANCE_SRCID" -Mtu $VxlanMtuSize | out-null
+        New-NsxVdsContext -VirtualDistributedSwitch $MgmtVds | out-null
+        New-NsxVdsContext -VirtualDistributedSwitch $CompVds | out-null
 
     }
     catch {
