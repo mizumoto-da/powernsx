@@ -461,7 +461,7 @@ if ( $buildnsx ) {
     # Prep VDS
 
     write-host -foregroundcolor Green "Configuring VDS for use with NSX..."
-<#
+
     try {
         #This is assuming two or more NICs on the uplink PG on this VDS.  No LAG required, and results in load balance accross multiple uplink NICs
         New-NsxVdsContext -VirtualDistributedSwitch $MgmtVds -Teaming "FAILOVER_ORDER" -Mtu $VxlanMtuSize | out-null
@@ -474,7 +474,7 @@ if ( $buildnsx ) {
     }
 
     write-host -foregroundcolor Green "Complete`n"
-#>
+
     ##############################
     # Prep Clusters
 
