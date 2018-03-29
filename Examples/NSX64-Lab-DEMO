@@ -426,7 +426,7 @@ if ( $buildnsx ) {
     # Deploy NSX Controllers
 
     write-host -foregroundcolor Green "Deploying NSX Controllers..."
-
+<#
 ### controller cluster DRS on
     Get-Cluster -Name $MgmtCluster | Set-Cluster -DrsEnabled:$true
 
@@ -435,7 +435,7 @@ if ( $buildnsx ) {
         write-host "   -> Creating IP Pool for Controller addressing"
 
         $ControllerPool = New-NsxIpPool -Name "Controller Pool" -Gateway $ManagementNetworkGateway -SubnetPrefixLength $ManagementNetworkSubnetPrefixLength -DnsServer1 $DnsServer1 -DnsServer2 $DnsServer2 -DnsSuffix $DnsSuffix -StartAddress $ControllerPoolStartIp -EndAddress $ControllerPoolEndIp
-<#
+
         for ( $i=0; $i -le 2; $i++ ) {
 
             write-host "   -> Deploying NSX Controller $($i+1)"
