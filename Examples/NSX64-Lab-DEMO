@@ -80,7 +80,7 @@ $EdgeDatastoreName = $ManagementDatastoreName
 $ComputeDatastoreName = “ds-site-a-nfs02”
 
 #Network Details
-$ManagementNetworkPortGroupName = $MgmtVdsName + ” - “ + “Mgmt”
+$ManagementNetworkPortGroupName = $MgmtVdsName + ” - “ + “VM Mgmt”
 $ManagementNetworkSubnetMask = "255.255.255.0"
 $ManagementNetworkSubnetPrefixLength = "24"
 $ManagementNetworkGateway = "192.168.110.1"
@@ -425,15 +425,16 @@ if ( $buildnsx ) {
     write-host -foregroundcolor Green "Complete`n"
 #>
 
-
+<#####
     ###############################
     # Deploy NSX Controllers
 
     write-host -foregroundcolor Green "Deploying NSX Controllers..."
 
 ### controller cluster DRS on
-    #Get-Cluster -Name $MgmtCluster | Set-Cluster -DrsEnabled:$true
-	Shutdown-VMGuest  -VM  mgt-w12-01a -Confirm:$false
+    Get-Cluster -Name $MgmtCluster | Set-Cluster -DrsEnabled:$true
+	#Shutdown-VMGuest  -VM  mgt-w12-01a -Confirm:$false
+    Start-Sleep -s 10
 
     try {
 
@@ -544,6 +545,7 @@ if ( $buildnsx ) {
     }
 
     write-host -foregroundcolor Green "`nNSX Infrastructure Config Complete`n"
+####>
 }
 
 if ( $deploy3ta ) {
