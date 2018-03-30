@@ -280,9 +280,10 @@ If ( $deploy3ta ) {
     if ( -not ( Test-Connection $($DeploymentVMHost.name) -count 1 -ErrorAction Stop )) {
         throw "Unable to validate connection to ESX host $($DeploymentVMHost.Name) used to deploy OVF to."
     }
-
+<#
     write-host -ForeGroundColor Green "Performing environment validation for 3ta deployment."
     if ( -not ( test-path $3TiervAppLocation )) { throw "$3TiervAppLocation not found."}
+#>
 }
 if ( $deploy3ta -and ( -not $buildnsx)) {
     #If Deploying 3ta, check that things exist
