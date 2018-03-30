@@ -119,6 +119,8 @@ $DnsSuffix = "corp.local"
 #Reduce NSX Manager Memory - in GB.  Comment variable out for default.
 $NsxManagerMem = 12
 
+$ControllerNum = 0
+
 #############################################
 #############################################
 # Logical Topology environment
@@ -285,6 +287,7 @@ If ( $deploy3ta ) {
     if ( -not ( test-path $3TiervAppLocation )) { throw "$3TiervAppLocation not found."}
 #>
 }
+<#
 if ( $deploy3ta -and ( -not $buildnsx)) {
     #If Deploying 3ta, check that things exist
     try {
@@ -350,7 +353,7 @@ if ( $deploy3ta -and ( -not $buildnsx)) {
         Throw "Failed validating environment for 3ta deployment.  $_"
     }
 }
-
+#>
 
 #PowerCLI 6 is required due to OvfConfiguration commands.
 [int]$PowerCliMajorVersion = (Get-PowerCliVersion).major
@@ -427,9 +430,10 @@ if ( $buildnsx ) {
     # Deploy NSX Controllers
 
     write-host -foregroundcolor Green "Deploying NSX Controllers..."
-<#
+
 ### controller cluster DRS on
-    Get-Cluster -Name $MgmtCluster | Set-Cluster -DrsEnabled:$true
+    #Get-Cluster -Name $MgmtCluster | Set-Cluster -DrsEnabled:$true
+	Shutdown-VMGuest  -VM  mgt-w12-01a -Confirm:$false
 
     try {
 
@@ -437,10 +441,11 @@ if ( $buildnsx ) {
 
         $ControllerPool = New-NsxIpPool -Name "Controller Pool" -Gateway $ManagementNetworkGateway -SubnetPrefixLength $ManagementNetworkSubnetPrefixLength -DnsServer1 $DnsServer1 -DnsServer2 $DnsServer2 -DnsSuffix $DnsSuffix -StartAddress $ControllerPoolStartIp -EndAddress $ControllerPoolEndIp
 
-        for ( $i=0; $i -le 2; $i++ ) {
+        for ( $i=0; $i -le $ControllerNum; $i++ ) {
 
             write-host "   -> Deploying NSX Controller $($i+1)"
             try {
+                write-host New-NsxController -ipPool $ControllerPool -Cluster $MgmtCluster -datastore $MgmtDatastore -PortGroup $ManagementPortGroup -password $ControllerPassword -confirm:$false -wait
 
                 $Controller = New-NsxController -ipPool $ControllerPool -Cluster $MgmtCluster -datastore $MgmtDatastore -PortGroup $ManagementPortGroup -password $ControllerPassword -confirm:$false -wait
             }
@@ -456,7 +461,7 @@ if ( $buildnsx ) {
     }
 
     write-host -foregroundcolor Green "Complete`n"
-#>
+
 
     ##############################
     # Prep VDS
