@@ -1,0 +1,918 @@
+made non-default in a future release.
+WARNING: Recommended usage of Connect-NsxServer is to use the -vCenterServer
+parameter and valid SSO credentials (requires rights of at least Read-Only over
+ vCenter Inventory and NSX Auditor role).
+WARNING: Use the -NsxServer parameter to continue using direct connection to
+NSX and either appliance local or Enterprise_Administrator (only) level SSO
+credentials.
+Using existing PowerCLI connection to 192.168.110.22
+NSX Books application deployment beginning.
+
+Creating Logical Switches...
+Creating DLR
+Adding Web LIF to DLR
+Adding App LIF to DLR
+Adding DB LIF to DLR
+Setting default route on DLR to 172.16.1.1
+Creating Edge
+New-NsxEdgeInterfaceSpec : Cannot validate argument on parameter
+'ConnectedTo'. The argument is null, empty, or an element of the argument
+collection contains a null value. Supply a collection that does not contain
+any null values and then try the command again.
+At C:\Users\Administrator\Documents\NSX-DEMO.ps1:620 char:100
++ ... k -ConnectedTo $LbEdgeUplinkNetwork -PrimaryAddress
+$LbEdgeUplinkPrimaryAddress  ...
++                    ~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidData: (:) [New-NsxEdgeInterfaceSpec], Par
+   ameterBindingValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationError,New-NsxEdgeInte
+   rfaceSpec
+
+New-NsxEdge : Cannot validate argument on parameter 'Interface'. The argument
+is null, empty, or an element of the argument collection contains a null
+value. Supply a collection that does not contain any null values and then try
+the command again.
+At C:\Users\Administrator\Documents\NSX-DEMO.ps1:621 char:103
++ ... ore -Interface $lbedgevnic0 -Password $AppliancePassword
+-FwDefaultPolicyAllow
++                    ~~~~~~~~~~~~
+    + CategoryInfo          : InvalidData: (:) [New-NsxEdge], ParameterBinding
+   ValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationError,New-NsxEdge
+
+Enabling LoadBalancing on OneArm-LB-01
+Creating Web Pool
+New-NsxLoadBalancerPool : Cannot validate argument on parameter 'Monitor'. The
+argument is null, empty, or an element of the argument collection contains a
+null value. Supply a collection that does not contain any null values and then
+try the command again.
+At C:\Users\Administrator\Documents\NSX-DEMO.ps1:639 char:230
++ ... mber2 -Monitor $Monitor
++                    ~~~~~~~~
+    + CategoryInfo          : InvalidData: (:) [New-NsxLoadBalancerPool], Para
+   meterBindingValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationError,New-NsxLoadBala
+   ncerPool
+
+Creating App Pool
+New-NsxLoadBalancerPool : Cannot validate argument on parameter 'Monitor'. The
+argument is null, empty, or an element of the argument collection contains a
+null value. Supply a collection that does not contain any null values and then
+try the command again.
+At C:\Users\Administrator\Documents\NSX-DEMO.ps1:643 char:184
++ ... bAlgo -Monitor $Monitor
++                    ~~~~~~~~
+    + CategoryInfo          : InvalidData: (:) [New-NsxLoadBalancerPool], Para
+   meterBindingValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationError,New-NsxLoadBala
+   ncerPool
+
+Add-NsxLoadBalancerPoolMember : Cannot validate argument on parameter
+'LoadBalancerPool'. The argument is null, empty, or an element of the argument
+collection contains a null value. Supply a collection that does not contain
+any null values and then try the command again.
+At C:\Users\Administrator\Documents\NSX-DEMO.ps1:646 char:27
++     $AppPool = $AppPool | Add-NsxLoadBalancerPoolMember -name $App01Name
+-IpAddr ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~
+    + CategoryInfo          : InvalidData: (:) [Add-NsxLoadBalancerPoolMember]
+   , ParameterBindingValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationError,Add-NsxLoadBala
+   ncerPoolMember
+
+Write-Host : Cannot bind parameter 'ForegroundColor'. Cannot convert value
+"color" to type "System.ConsoleColor". Error: "Unable to match the identifier
+name color to a valid enumerator name.  Specify one of the following
+enumerator names and try again: Black, DarkBlue, DarkGreen, DarkCyan, DarkRed,
+DarkMagenta, DarkYellow, Gray, DarkGray, Blue, Green, Cyan, Red, Magenta,
+Yellow, White"
+At C:\Users\Administrator\Documents\NSX-DEMO.ps1:650 char:28
++     write-host -foreground color "Green" "Creating Application Profiles for
+Web  ...
++                            ~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [Write-Host], ParameterBind
+   ingException
+    + FullyQualifiedErrorId : CannotConvertArgumentNoMessage,Microsoft.PowerSh
+   ell.Commands.WriteHostCommand
+
+Creating VIPs
+Add-NsxLoadBalancerVip : Cannot validate argument on parameter
+'ApplicationProfile'. The argument is null, empty, or an element of the
+argument collection contains a null value. Supply a collection that does not
+contain any null values and then try the command again.
+At C:\Users\Administrator\Documents\NSX-DEMO.ps1:656 char:217
++ ... icationProfile $WebAppProfile -DefaultPool $WebPool -AccelerationEnabled
+| out-n ...
++                    ~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidData: (:) [Add-NsxLoadBalancerVip], Param
+   eterBindingValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationError,Add-NsxLoadBala
+   ncerVip
+
+Add-NsxLoadBalancerVip : Cannot validate argument on parameter
+'ApplicationProfile'. The argument is null, empty, or an element of the
+argument collection contains a null value. Supply a collection that does not
+contain any null values and then try the command again.
+At C:\Users\Administrator\Documents\NSX-DEMO.ps1:657 char:219
++ ... icationProfile $AppAppProfile -DefaultPool $AppPool -AccelerationEnabled
+| out-n ...
++                    ~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidData: (:) [Add-NsxLoadBalancerVip], Param
+   eterBindingValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationError,Add-NsxLoadBala
+   ncerVip
+
+Configuring Edge OSPF
+Configuring Logicalrouter OSPF
+Getting Services
+invoke-nsxwebrequest : Invoke-NsxWebRequest : The NSX API response received
+indicates a failure. 400 : Bad Request : Response Body: <?xml version="1.0"
+encoding="UTF-8"?>
+<error><errorCode>210</errorCode><details>Another object with same name :
+tcp-80 already exists in the current scope :
+globalroot-0.</details><moduleName>core-services</moduleName></error>
+At C:\Users\Administrator\Documents\WindowsPowerShell\Modules\PowerNSX\PowerNSX
+.psm1:26147 char:21
++         $response = invoke-nsxwebrequest -method "post" -uri $URI -body
+$body -c ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~
+    + CategoryInfo          : InvalidResult: (Invoke-NsxWebRequest:String) [In
+   voke-NsxWebRequest], InternalNsxApiException
+    + FullyQualifiedErrorId : NsxAPIFailureResult,Invoke-NsxWebRequest
+
+The property 'content' cannot be found on this object. Verify that the
+property exists.
+At C:\Users\Administrator\Documents\WindowsPowerShell\Modules\PowerNSX\PowerNSX
+.psm1:26153 char:13
++             Get-NsxService -objectId $response.content -connection
+$connection
++
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [], PropertyNotFoundException
+    + FullyQualifiedErrorId : PropertyNotFoundStrict
+
+invoke-nsxwebrequest : Invoke-NsxWebRequest : The NSX API response received
+indicates a failure. 400 : Bad Request : Response Body: <?xml version="1.0"
+encoding="UTF-8"?>
+<error><errorCode>210</errorCode><details>Another object with same name :
+tcp-3306 already exists in the current scope :
+globalroot-0.</details><moduleName>core-services</moduleName></error>
+At C:\Users\Administrator\Documents\WindowsPowerShell\Modules\PowerNSX\PowerNSX
+.psm1:26147 char:21
++         $response = invoke-nsxwebrequest -method "post" -uri $URI -body
+$body -c ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~
+    + CategoryInfo          : InvalidResult: (Invoke-NsxWebRequest:String) [In
+   voke-NsxWebRequest], InternalNsxApiException
+    + FullyQualifiedErrorId : NsxAPIFailureResult,Invoke-NsxWebRequest
+
+The property 'content' cannot be found on this object. Verify that the
+property exists.
+At C:\Users\Administrator\Documents\WindowsPowerShell\Modules\PowerNSX\PowerNSX
+.psm1:26153 char:13
++             Get-NsxService -objectId $response.content -connection
+$connection
++
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [], PropertyNotFoundException
+    + FullyQualifiedErrorId : PropertyNotFoundStrict
+
+invoke-nsxwebrequest : Invoke-NsxWebRequest : The NSX API response received
+indicates a failure. 400 : Bad Request : Response Body: <?xml version="1.0"
+encoding="UTF-8"?>
+<error><errorCode>210</errorCode><details>Another object with same name :
+SG-TAG-Web Servers A already exists in the current scope :
+globalroot-0.</details><moduleName>core-services</moduleName></error>
+At C:\Users\Administrator\Documents\WindowsPowerShell\Modules\PowerNSX\PowerNSX
+.psm1:24464 char:17
++         $null = invoke-nsxwebrequest -method "post" -uri $URI -body $body
+-conne ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~
+    + CategoryInfo          : InvalidResult: (Invoke-NsxWebRequest:String) [In
+   voke-NsxWebRequest], InternalNsxApiException
+    + FullyQualifiedErrorId : NsxAPIFailureResult,Invoke-NsxWebRequest
+
+invoke-nsxwebrequest : Invoke-NsxWebRequest : The NSX API response received
+indicates a failure. 400 : Bad Request : Response Body: <?xml version="1.0"
+encoding="UTF-8"?>
+<error><errorCode>210</errorCode><details>Another object with same name : App
+Servers USG already exists in the current scope :
+globalroot-0.</details><moduleName>core-services</moduleName></error>
+At C:\Users\Administrator\Documents\WindowsPowerShell\Modules\PowerNSX\PowerNSX
+.psm1:24464 char:17
++         $null = invoke-nsxwebrequest -method "post" -uri $URI -body $body
+-conne ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~
+    + CategoryInfo          : InvalidResult: (Invoke-NsxWebRequest:String) [In
+   voke-NsxWebRequest], InternalNsxApiException
+    + FullyQualifiedErrorId : NsxAPIFailureResult,Invoke-NsxWebRequest
+
+invoke-nsxwebrequest : Invoke-NsxWebRequest : The NSX API response received
+indicates a failure. 400 : Bad Request : Response Body: <?xml version="1.0"
+encoding="UTF-8"?>
+<error><errorCode>210</errorCode><details>Another object with same name : DB
+Servers USG already exists in the current scope :
+globalroot-0.</details><moduleName>core-services</moduleName></error>
+At C:\Users\Administrator\Documents\WindowsPowerShell\Modules\PowerNSX\PowerNSX
+.psm1:24464 char:17
++         $null = invoke-nsxwebrequest -method "post" -uri $URI -body $body
+-conne ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~
+    + CategoryInfo          : InvalidResult: (Invoke-NsxWebRequest:String) [In
+   voke-NsxWebRequest], InternalNsxApiException
+    + FullyQualifiedErrorId : NsxAPIFailureResult,Invoke-NsxWebRequest
+
+Creating Source IP Groups
+invoke-nsxwebrequest : Invoke-NsxWebRequest : The NSX API response received
+indicates a failure. 400 : Bad Request : Response Body: <?xml version="1.0"
+encoding="UTF-8"?>
+<error><errorCode>210</errorCode><details>Another object with same name :
+AppVIP_IpSet already exists in the current scope :
+globalroot-0.</details><moduleName>core-services</moduleName></error>
+At C:\Users\Administrator\Documents\WindowsPowerShell\Modules\PowerNSX\PowerNSX
+.psm1:25120 char:21
++         $response = invoke-nsxwebrequest -method "post" -uri $URI -body
+$body -c ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~
+    + CategoryInfo          : InvalidResult: (Invoke-NsxWebRequest:String) [In
+   voke-NsxWebRequest], InternalNsxApiException
+    + FullyQualifiedErrorId : NsxAPIFailureResult,Invoke-NsxWebRequest
+
+The property 'content' cannot be found on this object. Verify that the
+property exists.
+At C:\Users\Administrator\Documents\WindowsPowerShell\Modules\PowerNSX\PowerNSX
+.psm1:25126 char:13
++             Get-NsxIPSet -objectid $response.content -connection $connection
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [], PropertyNotFoundException
+    + FullyQualifiedErrorId : PropertyNotFoundStrict
+
+invoke-nsxwebrequest : Invoke-NsxWebRequest : The NSX API response received
+indicates a failure. 400 : Bad Request : Response Body: <?xml version="1.0"
+encoding="UTF-8"?>
+<error><errorCode>210</errorCode><details>Another object with same name :
+InternalESG_IpSet already exists in the current scope :
+globalroot-0.</details><moduleName>core-services</moduleName></error>
+At C:\Users\Administrator\Documents\WindowsPowerShell\Modules\PowerNSX\PowerNSX
+.psm1:25120 char:21
++         $response = invoke-nsxwebrequest -method "post" -uri $URI -body
+$body -c ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~
+    + CategoryInfo          : InvalidResult: (Invoke-NsxWebRequest:String) [In
+   voke-NsxWebRequest], InternalNsxApiException
+    + FullyQualifiedErrorId : NsxAPIFailureResult,Invoke-NsxWebRequest
+
+The property 'content' cannot be found on this object. Verify that the
+property exists.
+At C:\Users\Administrator\Documents\WindowsPowerShell\Modules\PowerNSX\PowerNSX
+.psm1:25126 char:13
++             Get-NsxIPSet -objectid $response.content -connection $connection
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [], PropertyNotFoundException
+    + FullyQualifiedErrorId : PropertyNotFoundStrict
+
+Creating Security Groups
+invoke-nsxwebrequest : Invoke-NsxWebRequest : The NSX API response received
+indicates a failure. 400 : Bad Request : Response Body: <?xml version="1.0"
+encoding="UTF-8"?>
+<error><errorCode>210</errorCode><details>Another object with same name : Web
+Servers A already exists in the current scope :
+globalroot-0.</details><moduleName>core-services</moduleName></error>
+At C:\Users\Administrator\Documents\WindowsPowerShell\Modules\PowerNSX\PowerNSX
+.psm1:22792 char:21
++         $response = invoke-nsxwebrequest -method "post" -uri $URI -body
+$body -c ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~
+    + CategoryInfo          : InvalidResult: (Invoke-NsxWebRequest:String) [In
+   voke-NsxWebRequest], InternalNsxApiException
+    + FullyQualifiedErrorId : NsxAPIFailureResult,Invoke-NsxWebRequest
+
+The property 'content' cannot be found on this object. Verify that the
+property exists.
+At C:\Users\Administrator\Documents\WindowsPowerShell\Modules\PowerNSX\PowerNSX
+.psm1:22798 char:13
++             Get-NsxSecuritygroup -objectId $response.content -connection
+$connec ...
++
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [], PropertyNotFoundException
+    + FullyQualifiedErrorId : PropertyNotFoundStrict
+
+invoke-nsxwebrequest : Invoke-NsxWebRequest : The NSX API response received
+indicates a failure. 400 : Bad Request : Response Body: <?xml version="1.0"
+encoding="UTF-8"?>
+<error><errorCode>210</errorCode><details>Another object with same name : App
+Servers A already exists in the current scope :
+globalroot-0.</details><moduleName>core-services</moduleName></error>
+At C:\Users\Administrator\Documents\WindowsPowerShell\Modules\PowerNSX\PowerNSX
+.psm1:22792 char:21
++         $response = invoke-nsxwebrequest -method "post" -uri $URI -body
+$body -c ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~
+    + CategoryInfo          : InvalidResult: (Invoke-NsxWebRequest:String) [In
+   voke-NsxWebRequest], InternalNsxApiException
+    + FullyQualifiedErrorId : NsxAPIFailureResult,Invoke-NsxWebRequest
+
+The property 'content' cannot be found on this object. Verify that the
+property exists.
+At C:\Users\Administrator\Documents\WindowsPowerShell\Modules\PowerNSX\PowerNSX
+.psm1:22798 char:13
++             Get-NsxSecuritygroup -objectId $response.content -connection
+$connec ...
++
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [], PropertyNotFoundException
+    + FullyQualifiedErrorId : PropertyNotFoundStrict
+
+invoke-nsxwebrequest : Invoke-NsxWebRequest : The NSX API response received
+indicates a failure. 400 : Bad Request : Response Body: <?xml version="1.0"
+encoding="UTF-8"?>
+<error><errorCode>210</errorCode><details>Another object with same name : DB
+Servers A already exists in the current scope :
+globalroot-0.</details><moduleName>core-services</moduleName></error>
+At C:\Users\Administrator\Documents\WindowsPowerShell\Modules\PowerNSX\PowerNSX
+.psm1:22792 char:21
++         $response = invoke-nsxwebrequest -method "post" -uri $URI -body
+$body -c ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~
+    + CategoryInfo          : InvalidResult: (Invoke-NsxWebRequest:String) [In
+   voke-NsxWebRequest], InternalNsxApiException
+    + FullyQualifiedErrorId : NsxAPIFailureResult,Invoke-NsxWebRequest
+
+The property 'content' cannot be found on this object. Verify that the
+property exists.
+At C:\Users\Administrator\Documents\WindowsPowerShell\Modules\PowerNSX\PowerNSX
+.psm1:22798 char:13
++             Get-NsxSecuritygroup -objectId $response.content -connection
+$connec ...
++
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [], PropertyNotFoundException
+    + FullyQualifiedErrorId : PropertyNotFoundStrict
+
+New-NsxSecurityGroup : Cannot validate argument on parameter 'IncludeMember'.
+The argument is null. Provide a valid value for the argument, and then try
+running the command again.
+At C:\Users\Administrator\Documents\NSX-DEMO.ps1:767 char:95
++ ... -includemember $WebSg, $AppSg, $DbSg
++                    ~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidData: (:) [New-NsxSecurityGroup], Paramet
+   erBindingValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationError,New-NsxSecurity
+   Group
+
+New-NsxSecurityTagAssignment : Cannot validate argument on parameter
+'VirtualMachine'. The argument is null or empty. Provide an argument that is
+not null or empty, and then try the command again.
+At C:\Users\Administrator\Documents\NSX-DEMO.ps1:776 char:70
++     $WebSt | New-NsxSecurityTagAssignment -ApplyToVm -VirtualMachine $WebVMs
+| O ...
++                                                                      ~~~~~~~
+    + CategoryInfo          : InvalidData: (:) [New-NsxSecurityTagAssignment],
+    ParameterBindingValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationError,New-NsxSecurity
+   TagAssignment
+
+New-NsxSecurityTagAssignment : Cannot validate argument on parameter
+'VirtualMachine'. The argument is null or empty. Provide an argument that is
+not null or empty, and then try the command again.
+At C:\Users\Administrator\Documents\NSX-DEMO.ps1:777 char:70
++     $AppSt | New-NsxSecurityTagAssignment -ApplyToVm -VirtualMachine $AppVMs
+| O ...
++                                                                      ~~~~~~~
+    + CategoryInfo          : InvalidData: (:) [New-NsxSecurityTagAssignment],
+    ParameterBindingValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationError,New-NsxSecurity
+   TagAssignment
+
+New-NsxSecurityTagAssignment : Cannot validate argument on parameter
+'VirtualMachine'. The argument is null or empty. Provide an argument that is
+not null or empty, and then try the command again.
+At C:\Users\Administrator\Documents\NSX-DEMO.ps1:778 char:69
++     $DbSt | New-NsxSecurityTagAssignment -ApplyToVm -VirtualMachine $DbVMs |
+Out ...
++                                                                     ~~~~~~
+    + CategoryInfo          : InvalidData: (:) [New-NsxSecurityTagAssignment],
+    ParameterBindingValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationError,New-NsxSecurity
+   TagAssignment
+
+Creating Firewall Section
+Creating Web Tier rule
+New-NsxFirewallRule : Cannot validate argument on parameter 'Source'. The
+argument is null, empty, or an element of the argument collection contains a
+null value. Supply a collection that does not contain any null values and then
+try the command again.
+At C:\Users\Administrator\Documents\NSX-DEMO.ps1:791 char:113
++ ... o Web" -Source $InternalESG_IpSet -Destination $WebSg -Service
+$HttpService -Act ...
++                    ~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidData: (:) [New-NsxFirewallRule], Paramete
+   rBindingValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationError,New-NsxFirewall
+   Rule
+
+Creating Web to App Tier rules
+New-NsxFirewallRule : Cannot validate argument on parameter 'Source'. The
+argument is null, empty, or an element of the argument collection contains a
+null value. Supply a collection that does not contain any null values and then
+try the command again.
+At C:\Users\Administrator\Documents\NSX-DEMO.ps1:795 char:124
++ ... p VIP" -Source $WebSg -Destination $AppVIP_IpSet -Service $HttpService
+-Action $ ...
++                    ~~~~~~
+    + CategoryInfo          : InvalidData: (:) [New-NsxFirewallRule], Paramete
+   rBindingValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationError,New-NsxFirewall
+   Rule
+
+New-NsxFirewallRule : Cannot validate argument on parameter 'Source'. The
+argument is null, empty, or an element of the argument collection contains a
+null value. Supply a collection that does not contain any null values and then
+try the command again.
+At C:\Users\Administrator\Documents\NSX-DEMO.ps1:796 char:131
++ ... gName" -Source $InternalEsg_IpSet -Destination $appSg -service
+$HttpService -Act ...
++                    ~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidData: (:) [New-NsxFirewallRule], Paramete
+   rBindingValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationError,New-NsxFirewall
+   Rule
+
+Creating Db Tier rules
+New-NsxFirewallRule : Cannot validate argument on parameter 'Source'. The
+argument is null, empty, or an element of the argument collection contains a
+null value. Supply a collection that does not contain any null values and then
+try the command again.
+At C:\Users\Administrator\Documents\NSX-DEMO.ps1:800 char:122
++ ... gName" -Source $AppSg -Destination $DbSg -Service $MySqlService -Action
+$AllowTr ...
++                    ~~~~~~
+    + CategoryInfo          : InvalidData: (:) [New-NsxFirewallRule], Paramete
+   rBindingValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationError,New-NsxFirewall
+   Rule
+
+Creating deny all applied to SG-Bookstore
+New-NsxFirewallRule : Cannot validate argument on parameter 'AppliedTo'. The
+argument is null, empty, or an element of the argument collection contains a
+null value. Supply a collection that does not contain any null values and then
+try the command again.
+At C:\Users\Administrator\Documents\NSX-DEMO.ps1:804 char:142
++ ... fic -AppliedTo $BooksSg -position bottom -EnableLogging -tag "$BooksSG"
++                    ~~~~~~~~
+    + CategoryInfo          : InvalidData: (:) [New-NsxFirewallRule], Paramete
+   rBindingValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationError,New-NsxFirewall
+   Rule
+
+Books application deployment complete.
+PowerCLI C:\Users\Administrator\Documents>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
