@@ -264,7 +264,7 @@ try {
     $EdgeCluster = get-cluster $EdgeClusterName -errorAction Stop
     $EdgeDatastore = get-datastore $EdgeDatastoreName -errorAction Stop
     $MgmtDatastore = Get-Datastore $ManagementDatastoreName -errorAction Stop
-    $ManagementPortGroup = Get-VdPortGroup $ManagementNetworkPortGroupName -errorAction Stop
+    $ManagementPortGroup = Get-VdPortGroup $MgmtPortGroupName -errorAction Stop
     $MgmtVds = Get-VdSwitch $MgmtVdsName -errorAction Stop | select-object -First 1
     $CompVds = $ComputeCluster | get-vmhost | Get-VdSwitch $ComputeVdsName -errorAction Stop | select-object -First 1
     if ( -not $CompVds ) { throw "Compute cluster hosts are not configured with compute VDSwitch."}
@@ -579,7 +579,7 @@ if ( $deploy3ta ) {
 
     # The DLR is created with the first vnic defined, and the datastore and cluster on which the Control VM will be deployed.
 ###    $Ldr = New-NsxLogicalRouter -name $LdrName -ManagementPortGroup $MgmtLs -interface $LdrvNic0 -cluster $EdgeCluster -datastore $EdgeDataStore
-    $Ldr = New-NsxLogicalRouter -name $LdrName -ManagementPortGroup $MgmtPortGroupName -interface $LdrvNic0 -cluster $EdgeCluster -datastore $EdgeDataStore
+    $Ldr = New-NsxLogicalRouter -name $LdrName -ManagementPortGroup $ManagementPortGroup -interface $LdrvNic0 -cluster $EdgeCluster -datastore $EdgeDataStore
 
 
     ## Adding DLR interfaces after the DLR has been deployed. This can be done any time if new interfaces are required.
@@ -595,7 +595,7 @@ if ( $deploy3ta ) {
 
     ##The first line pulls the uplink name coz we cant assume we know the index ID
     $LdrTransitInt = get-nsxlogicalrouter | get-nsxlogicalrouterinterface | ? { $_.name -eq $TransitLsName}
-    Get-NsxLogicalRouter $LdrName | Get-NsxLogicalRouterRouting | Set-NsxLogicalRouterRouting -DefaultGatewayVnic $LdrTransitInt.index -DefaultGatewayAddress $EdgeInternalPrimaryAddress -confirm:$false | out-null
+#    Get-NsxLogicalRouter $LdrName | Get-NsxLogicalRouterRouting | Set-NsxLogicalRouterRouting -DefaultGatewayVnic $LdrTransitInt.index -DefaultGatewayAddress $EdgeInternalPrimaryAddress -confirm:$false | out-null
 
 
     ######################################
