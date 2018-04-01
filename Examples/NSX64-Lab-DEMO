@@ -270,7 +270,8 @@ try {
     if ( -not $CompVds ) { throw "Compute cluster hosts are not configured with compute VDSwitch."}
     $ComputeDatastore = get-datastore $ComputeDatastoreName -errorAction Stop
     $EdgeUplinkNetwork = get-vdportgroup $EdgeUplinkNetworkName -errorAction Stop
-    $LbEdgeUplinkNetwork = get-vdportgroup $LbEdgeUplinkNetworkName -errorAction Stop
+    #$LbEdgeUplinkNetwork = get-vdportgroup $LbEdgeUplinkNetworkName -errorAction Stop
+    $LbEdgeUplinkNetwork = Get-NsxLogicalSwitch $LbEdgeUplinkNetworkName | select-object -First 1
 
 }
 catch {
