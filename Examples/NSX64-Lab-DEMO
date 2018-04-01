@@ -259,11 +259,11 @@ catch {
 
 #Check that the vCenter env looks correct for deployment.
 try {
-    $MgmtCluster = Get-Cluster $MgmtClusterName -errorAction Stop
-    $ComputeCluster = Get-Cluster $ComputeClusterName -errorAction Stop
-    $EdgeCluster = get-cluster $EdgeClusterName -errorAction Stop
-    $EdgeDatastore = get-datastore $EdgeDatastoreName -errorAction Stop
-    $MgmtDatastore = Get-Datastore $ManagementDatastoreName -errorAction Stop
+    $MgmtCluster = Get-Cluster $MgmtClusterName -errorAction Stop | Select-Object -First 1
+    $ComputeCluster = Get-Cluster $ComputeClusterName -errorAction Stop | Select-Object -First 1
+    $EdgeCluster = get-cluster $EdgeClusterName -errorAction Stop | Select-Object -First 1
+    $EdgeDatastore = get-datastore $EdgeDatastoreName -errorAction Stop | Select-Object -First 1
+    $MgmtDatastore = Get-Datastore $ManagementDatastoreName -errorAction Stop | Select-Object -First 1
     $ManagementPortGroup = Get-VdPortGroup $MgmtPortGroupName -errorAction Stop
     $MgmtVds = Get-VdSwitch $MgmtVdsName -errorAction Stop | select-object -First 1
     $CompVds = $ComputeCluster | get-vmhost | Get-VdSwitch $ComputeVdsName -errorAction Stop | select-object -First 1
@@ -620,7 +620,7 @@ if ( $deploy3ta ) {
 
     # Enable Loadbalancing on $edgeName
 
-    $lbedgevnic0 = New-NsxEdgeinterfacespec -index 0 -Name “App Network” -type Uplink -ConnectedTo $LbEdgeUplinkNetwork -PrimaryAddress $LbEdgeUplinkPrimaryAddress -SubnetPrefixLength $DefaultSubnetBits
+    $lbedgevnic0 = New-NsxEdgeinterfacespec -index 0 -Name “Web Network” -type Uplink -ConnectedTo $LbEdgeUplinkNetwork -PrimaryAddress $LbEdgeUplinkPrimaryAddress -SubnetPrefixLength $DefaultSubnetBits
     $Edge2 = New-NsxEdge -name $LbEdgeName -cluster $EdgeCluster -datastore $EdgeDataStore -Interface $lbedgevnic0 -Password $AppliancePassword -FwDefaultPolicyAllow
 
     ##Configure Edge DGW
