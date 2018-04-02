@@ -150,9 +150,10 @@ $LdrName = "Distributed-Router-01"
 
 $MgmtPortGroupName = “Mgmt_Edge_VDS - VM Mgmt”
 #OneArmLB
-$LbEdgeName = “OneArm-LB-01"
+$
+Name = “OneArm-LB-01"
 $LbEdgeUplinkPrimaryAddress = "172.16.110.10”
-$LbEdgeUplinkSecondaryAddress = "172.16.110.9”
+$LbEdgeUplinkSecondaryAddress = "172.16.110.10”
 $LbEdgeDefaultGW = "172.16.110.1”
 $LbEdgeUplinkNetworkName = “Web-Tier-01-A”
 
@@ -173,9 +174,9 @@ $DefaultSubnetBits = "24"
 $vAppName = "Books"
 
 #WebTier VMs
-$Web01Name = "Web01"
+$Web01Name = "web-sv-05a"
 $Web01Ip = "172.16.110.11"
-$Web02Name = "Web02"
+$Web02Name = "web-sv-06a"
 $Web02Ip = "172.16.110.12"
 
 #AppTier VMs
@@ -656,8 +657,8 @@ if ( $deploy3ta ) {
 
     # Create the VIPs for the relevant WebPools. Using the Secondary interfaces.
     write-host -foregroundcolor "Green" "Creating VIPs"
-    Get-NsxEdge $LbEdgeName | Get-NsxLoadBalancer | Add-NsxLoadBalancerVip -name $WebVipName -Description $WebVipName -ipaddress $EdgeUplinkSecondaryAddress -Protocol $VipProtocol -Port $HttpPort -ApplicationProfile $WebAppProfile -DefaultPool $WebPool -AccelerationEnabled | out-null
-    Get-NsxEdge $LbEdgeName | Get-NsxLoadBalancer | Add-NsxLoadBalancerVip -name $AppVipName -Description $AppVipName -ipaddress $EdgeInternalSecondaryAddress -Protocol $VipProtocol -Port $HttpPort -ApplicationProfile $AppAppProfile -DefaultPool $AppPool -AccelerationEnabled | out-null
+    Get-NsxEdge $LbEdgeName | Get-NsxLoadBalancer | Add-NsxLoadBalancerVip -name $WebVipName -Description $WebVipName -ipaddress $LbEdgeUplinkSecondaryAddress -Protocol $VipProtocol -Port $HttpPort -ApplicationProfile $WebAppProfile -DefaultPool $WebPool -AccelerationEnabled | out-null
+    #Get-NsxEdge $LbEdgeName | Get-NsxLoadBalancer | Add-NsxLoadBalancerVip -name $AppVipName -Description $AppVipName -ipaddress $LbEdgeInternalSecondaryAddress -Protocol $VipProtocol -Port $HttpPort -ApplicationProfile $AppAppProfile -DefaultPool $AppPool -AccelerationEnabled | out-null
 
 
     ####################################
