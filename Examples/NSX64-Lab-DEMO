@@ -428,7 +428,7 @@ if ( $buildnsx ) {
     write-host -foregroundcolor Green "Complete`n"
 #>
 
-<#####
+<###
     ###############################
     # Deploy NSX Controllers
 
@@ -651,7 +651,7 @@ if ( $deploy3ta ) {
     $AppPool = $AppPool | Add-NsxLoadBalancerPoolMember -name $App02Name -IpAddress $App02Ip -Port $HttpPort
 
     # Create App Profiles. It is possible to use the same but for ease of operations this will be two here.
-    write-host -foreground color "Green" "Creating Application Profiles for Web and App"
+    write-host -foregroundcolor "Green" "Creating Application Profiles for Web and App"
     $WebAppProfile = Get-NsxEdge $LbEdgeName | Get-NsxLoadBalancer | New-NsxLoadBalancerApplicationProfile -Name $WebAppProfileName  -Type $VipProtocol
     $AppAppProfile = Get-NsxEdge $LbEdgeName | Get-NsxLoadBalancer | new-NsxLoadBalancerApplicationProfile -Name $AppAppProfileName  -Type $VipProtocol
 
