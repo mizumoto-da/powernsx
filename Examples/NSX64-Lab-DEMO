@@ -772,9 +772,9 @@ if ( $deploy3ta ) {
 
     # Apply Security Tag to VM's for Security Group membership
 
-    $WebVMs = Get-Vm | ? {$_.name -match ("Web0")}
-    $AppVMs = Get-Vm | ? {$_.name -match ("App0")}
-    $DbVMs = Get-Vm | ? {$_.name -match ("Db0")}
+    $WebVMs = Get-Vm | ? {$_.name -match ("web-sv")} | sort -unique
+    $AppVMs = Get-Vm | ? {$_.name -match ("app")} | sort -unique
+    $DbVMs = Get-Vm | ? {$_.name -match ("db")} | sort -unique
 
 
     $WebSt | New-NsxSecurityTagAssignment -ApplyToVm -VirtualMachine $WebVMs | Out-Null
