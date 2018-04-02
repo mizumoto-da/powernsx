@@ -154,7 +154,7 @@ $LbEdgeName = “OneArm-LB-01"
 $LbEdgeUplinkPrimaryAddress = "172.16.110.10”
 $LbEdgeUplinkSecondaryAddress = "172.16.110.9”
 $LbEdgeDefaultGW = "172.16.110.1”
-$LbEdgeUplinkNetworkName = “Web-Tier-01”
+$LbEdgeUplinkNetworkName = “Web-Tier-01-A”
 
 
 #Topology
