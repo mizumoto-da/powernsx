@@ -271,7 +271,7 @@ try {
     $ComputeDatastore = get-datastore $ComputeDatastoreName -errorAction Stop
     $EdgeUplinkNetwork = get-vdportgroup $EdgeUplinkNetworkName -errorAction Stop
     #$LbEdgeUplinkNetwork = get-vdportgroup $LbEdgeUplinkNetworkName -errorAction Stop
-    $LbEdgeUplinkNetwork = Get-NsxLogicalSwitch $LbEdgeUplinkNetworkName | select-object -First 1
+    #$LbEdgeUplinkNetwork = Get-NsxLogicalSwitch $LbEdgeUplinkNetworkName | select-object -First 1
 
 }
 catch {
@@ -619,6 +619,7 @@ if ( $deploy3ta ) {
     # Load LoadBalancer
 
     # Enable Loadbalancing on $edgeName
+    $LbEdgeUplinkNetwork = Get-NsxLogicalSwitch $LbEdgeUplinkNetworkName | select-object -First 1
 
     $lbedgevnic0 = New-NsxEdgeinterfacespec -index 0 -Name “Web Network” -type Uplink -ConnectedTo $LbEdgeUplinkNetwork -PrimaryAddress $LbEdgeUplinkPrimaryAddress -SubnetPrefixLength $DefaultSubnetBits
     $Edge2 = New-NsxEdge -name $LbEdgeName -cluster $EdgeCluster -datastore $EdgeDataStore -Interface $lbedgevnic0 -Password $AppliancePassword -FwDefaultPolicyAllow
